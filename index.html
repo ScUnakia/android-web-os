@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Android Web OS v1.0 Part 1</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+html,body{height:100%;overflow:hidden;background:#000}
+.screen{position:fixed;inset:0;display:none;justify-content:center;align-items:center;flex-direction:column}
+.active{display:flex}
+#boot{background:#000;color:#3ddc84}
+#logo{font-size:80px;animation:pulse 1.2s infinite}
+@keyframes pulse{50%{transform:scale(1.1)}}
+#lock{background:linear-gradient(135deg,#4f46e5,#06b6d4);color:#fff}
+#time{font-size:64px}
+#date{font-size:20px;margin:8px 0 40px}
+#hint{opacity:.8}
+</style>
+</head>
+<body>
+
+<div id="boot" class="screen active">
+<div id="logo">🤖</div>
+<h1>Android Web OS</h1>
+<p>Booting...</p>
+</div>
+
+<div id="lock" class="screen">
+<div id="time">00:00</div>
+<div id="date"></div>
+<div id="hint">Tap anywhere to continue</div>
+</div>
+
+<script>
+const boot=document.getElementById('boot');
+const lock=document.getElementById('lock');
+
+function show(s){
+ document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
+ s.classList.add('active');
+}
+
+function updateClock(){
+ const d=new Date();
+ document.getElementById('time').textContent=d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+ document.getElementById('date').textContent=d.toLocaleDateString([], {weekday:'long',month:'long',day:'numeric'});
+}
+updateClock();
+setInterval(updateClock,1000);
+
+window.onload=()=>setTimeout(()=>show(lock),2500);
+
+lock.onclick=()=>alert("Part 2 will add the PIN screen.");
+</script>
+
+</body>
+</html>
